@@ -166,11 +166,14 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
                     waitForPlayerAction(); // Wait for player 1 to move
                     sendMove(); // Send the move to the server
                     recieveMove(); // Receive info from the server
+                    receiveInfoFromServer();
+
                 }
                 else if (player == PLAYER2) {
                     recieveMove(); // Receive info from the server
                     waitForPlayerAction(); // Wait for player 2 to move
                     sendMove(); // Send player 2's move to the server
+                    receiveInfoFromServer();
                 }
             }
         }
