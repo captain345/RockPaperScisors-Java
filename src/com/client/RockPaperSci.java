@@ -17,6 +17,7 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
     private char myToken = ' ';
 
     private int mySelection = 0;
+    private int otherSelection  = 0;
 
     // The token for the other player
     private char otherToken = ' ';
@@ -26,8 +27,6 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
 
     // Create and initialize a status label
     private JLabel jlblStatus = new JLabel();
-
-
 
     // Input and output streams from/to server
     private DataInputStream fromServer;
@@ -51,11 +50,6 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
         JPanel p = new JPanel();
 
         p.setLayout(new GridLayout(3, 0, 0, 0));
-
-      // for (int i = 0; i < 3; i++)
-              //  p.add(grid[i] = new Grid(i, this));
-
-
         p.setBorder(new LineBorder(Color.black, 1));
 
         JButton rock = new JButton("Rock");
@@ -143,8 +137,6 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
 
             if (player == PLAYER1) {
 
-                setMyToken('X');
-                setOtherToken('O');
                 setTitleMessage("You're Player 1");
                 setStatusMessage("Waiting for player 2 to join");
 
@@ -162,9 +154,7 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
 
             else if (player == PLAYER2) {
 
-                setMyToken('O');
-                setOtherToken('X');
-                setTitleMessage("You're Player 2");
+                 setTitleMessage("You're Player 2");
                 setStatusMessage("Waiting for player 1 to move");
             }
 
@@ -194,66 +184,39 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
 
             Thread.sleep(100);
         }
-
         // when we reach this point, the local player must have selected a board position, so proceed
         // and send on the move to the server side
-
         setWaiting(true);
     }
 
 
     private void sendMove() throws IOException {
-
-        toServer.writeInt(getMySelection()); // Send the selected row
+        toServer.writeInt(getMySelection()); // Send the selected int
     }
 
     private void receiveInfoFromServer() throws IOException {
 
         // Receive game status - this will either be a win message, a draw message or a continue message
 
-        int status = fromServer.readInt();
+        int i = fromServer.readInt();
 
-        if (status == PLAYER1_WON) {
-            // Player 1 won, stop playing
-            continueToPlay = false;
-            if (getMyToken() == 'X') {
-                setStatusMessage("I won! (X)");
-            }
-            else if (getMyToken() == 'O') {
-                setStatusMessage("Player 1 (X) has won!");
-                receiveMove();
-            }
-        }
-        else if (status == PLAYER2_WON) {
-            // Player 2 won, stop playing
-            continueToPlay = false;
-            if (getMyToken() == 'O') {
-                setStatusMessage("I won! (O)");
-            }
-            else if (getMyToken() == 'X') {
-                setStatusMessage("Player 2 (O) has won!");
-                receiveMove();
-            }
-        }
-        else if (status == DRAW) {
-            // No winner, game is over
-            continueToPlay = false;
-            setStatusMessage("Game is over, no winner!");
-
-            if (getMyToken() == 'O') {
-                receiveMove();
-            }
-        }
-        else {
-            receiveMove();
-            setStatusMessage("My turn");
-            setMyTurn(true); // It is my turn
-        }
+        setOtherSelection(i);
+        setStatusMessage("My turn");
+        setMyTurn(true); // It is my turn
     }
 
-    private void receiveMove() throws IOException {
-        // Get the other player's move
+    public static void main(String[] args) {
+
+        // Create a frame
+        RockPaperSci frame = new RockPaperSci("Rock Paper Scissors");
+
+        // Display the frame
+        frame.setSize(320, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
+
+
 
     // accessors/mutators
 
@@ -271,6 +234,10 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
 
     public void setMyToken(char c) {
         myToken = c;
+    }
+
+    public void setOtherSelection(int i){
+        otherSelection = i;
     }
 
     public char getOtherToken() {
@@ -303,18 +270,6 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
 
     public void setTitleMessage(String msg) {
         jlblTitle.setText(msg);
-    }
-
-
-    public static void main(String[] args) {
-
-        // Create a frame
-        RockPaperSci frame = new RockPaperSci("Rock Paper Scissors");
-
-        // Display the frame
-        frame.setSize(320, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
     }
 
 

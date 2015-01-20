@@ -14,7 +14,6 @@ public class GameSession implements Runnable,RockPaperSciConstant {
     private Socket player1;
     private Socket player2;
 
-    private char[] grid = new char[3];
     private DataInputStream fromPlayer1;
     private DataOutputStream toPlayer1;
     private DataInputStream fromPlayer2;
@@ -38,41 +37,14 @@ public class GameSession implements Runnable,RockPaperSciConstant {
 
             toPlayer1.writeInt(CONTINUE);
 
-            while(true){
-                int player1Int = fromPlayer1.readInt();
-
-
-                if(isWon(player1Int)){
-                    toPlayer1.writeInt(PLAYER1_WON);
-                    toPlayer2.writeInt(PLAYER1_WON);
-                    sendMove(toPlayer2, player1Int );
-                    break;
-                }
-                //need to write an else if here for a draw
-
-                else{
-
-                    toPlayer2.writeInt(CONTINUE);
-
-                    sendMove(toPlayer2, player1Int);
-                }
-
-                int player2Int = fromPlayer2.readInt();
-
-
-
-                if(isWon(player2Int)){
-                    toPlayer1.writeInt(PLAYER2_WON);
-                    toPlayer2.writeInt(PLAYER2_WON);
-                    sendMove(toPlayer1, player2Int);
-                    break;
-                }
-                else{
-                    toPlayer1.writeInt(CONTINUE);
-
-                    sendMove(toPlayer1, player2Int);
-                }
+            while(true) {
+                int selection1 = fromPlayer1.readInt();
+                System.out.println(selection1);
+                break;
             }
+                toPlayer2.writeInt(CONTINUE);
+                int selection2 = fromPlayer2.readInt();
+                System.out.println(selection2);
         }
         catch(IOException ex) {
             System.err.println(ex);
@@ -80,22 +52,17 @@ public class GameSession implements Runnable,RockPaperSciConstant {
 
     }
 
-    private void sendMove(DataOutputStream out, int row) throws IOException{
-        out.writeInt(row);
-    }
 
-    private boolean isDraw(){
 
-        return false;
-    }
 
-    private boolean isWon(int token){
-        for(int i =0; i<3;i++){
 
-        }
 
-        return false;
-    }
+//
+//    private void sendMove(DataOutputStream out, int selection) throws IOException{
+//        out.writeInt(selection);
+//    }
+//
+
 
 
 }
