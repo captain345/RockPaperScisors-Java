@@ -37,14 +37,53 @@ public class GameSession implements Runnable,RockPaperSciConstant {
 
             toPlayer1.writeInt(CONTINUE);
 
+            int selection1 = 0;
+
             while(true) {
-                int selection1 = fromPlayer1.readInt();
+                selection1 = fromPlayer1.readInt();
                 System.out.println(selection1);
                 break;
             }
                 toPlayer2.writeInt(CONTINUE);
                 int selection2 = fromPlayer2.readInt();
                 System.out.println(selection2);
+
+            if(selection1 == selection2){
+                toPlayer1.writeInt(DRAW);
+                toPlayer2.writeInt(DRAW);
+            }
+            if(selection2 == selection1){
+                toPlayer1.writeInt(DRAW);
+                toPlayer2.writeInt(DRAW);
+            }
+            if (selection1 == 1 && selection2 ==2){
+                toPlayer1.writeInt(PLAYER2_WON);
+                toPlayer2.writeInt(PLAYER2_WON);
+            }
+            if (selection1 == 2 && selection2 ==3){
+                toPlayer1.writeInt(PLAYER2_WON);
+                toPlayer2.writeInt(PLAYER2_WON);
+            }
+            if (selection1 == 3 && selection2 == 1){
+                toPlayer1.writeInt(PLAYER2_WON);
+                toPlayer2.writeInt(PLAYER2_WON);
+            }
+
+            if (selection1 == 1 && selection2 ==3){
+                toPlayer1.writeInt(PLAYER1_WON);
+                toPlayer2.writeInt(PLAYER1_WON);
+            }
+            if (selection1 == 2 && selection2 ==1){
+                toPlayer1.writeInt(PLAYER1_WON);
+                toPlayer2.writeInt(PLAYER1_WON);
+            }
+            if (selection1 == 3 && selection2 == 2){
+                toPlayer1.writeInt(PLAYER1_WON);
+                toPlayer2.writeInt(PLAYER1_WON);
+            }
+
+
+
         }
         catch(IOException ex) {
             System.err.println(ex);

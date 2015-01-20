@@ -165,10 +165,10 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
                 if (player == PLAYER1) {
                     waitForPlayerAction(); // Wait for player 1 to move
                     sendMove(); // Send the move to the server
-                    receiveInfoFromServer(); // Receive info from the server
+                    recieveMove(); // Receive info from the server
                 }
                 else if (player == PLAYER2) {
-                    receiveInfoFromServer(); // Receive info from the server
+                    recieveMove(); // Receive info from the server
                     waitForPlayerAction(); // Wait for player 2 to move
                     sendMove(); // Send player 2's move to the server
                 }
@@ -194,7 +194,7 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
         toServer.writeInt(getMySelection()); // Send the selected int
     }
 
-    private void receiveInfoFromServer() throws IOException {
+    private void recieveMove() throws IOException, InterruptedException {
 
         // Receive game status - this will either be a win message, a draw message or a continue message
 
@@ -203,6 +203,35 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
         setOtherSelection(i);
         setStatusMessage("My turn");
         setMyTurn(true); // It is my turn
+    }
+    private void receiveInfoFromServer() throws IOException {
+        int status = fromServer.readInt();
+
+        if (status == PLAYER1_WON) {
+            // Player 1 won, stop playing
+            continueToPlay = false;
+            setStatusMessage("Player 1 WON!!!");
+            System.out.println("1 Won");
+
+        }
+        else if (status == PLAYER2_WON) {
+            // Player 2 won, stop playing
+            continueToPlay = false;
+            setStatusMessage("Player 2 WON");
+            System.out.println("2 Won");
+
+
+        }
+        else if (status == DRAW) {
+            // No winner, game is over
+            continueToPlay = false;
+            setStatusMessage("Game is over, no winner!");
+            System.out.println("Draw");
+
+
+        }
+
+
     }
 
     public static void main(String[] args) {
