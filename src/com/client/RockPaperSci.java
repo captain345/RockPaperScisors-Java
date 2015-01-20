@@ -8,40 +8,38 @@ import java.io.*;
 import java.net.*;
 /**
  * Created by Thomas on 17/01/2015.
+ * This code is the client side of the system and works with a variety of getter and setter methods,
+ * as all variables are set to private they can only be altered using these methods
+ *
+ * 2 data streams are used to send data to the server
+ *
+ * action listeners are used in the class constructor, the class itself inherits from JFrame and the listeners are used to invoke actions when certain buttons are pressed
+ *
+ * send move takes the information that's input by the user and sends it to the server for processing
+ *
+ * receive move does much the same thing as send however it receives the move of the other player rather than sending it
+ *
+ *
+ * receive information from server will let the system check if the server has assigned a winner for the game
+ *
+ * getters and setters do as the name implys
  */
 public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConstant {
-    // Indicate whether the player has the turn
     private boolean myTurn = false;
-
-    // The token for this player
-    private char myToken = ' ';
 
     private int mySelection = 0;
     private int otherSelection  = 0;
 
-    // The token for the other player
-    private char otherToken = ' ';
-
-    // Create and initialize a title label
     private JLabel jlblTitle = new JLabel();
 
-    // Create and initialize a status label
     private JLabel jlblStatus = new JLabel();
 
-    // Input and output streams from/to server
     private DataInputStream fromServer;
     private DataOutputStream toServer;
 
-    // Continue to play?
     private boolean continueToPlay = true;
 
-    // Wait for the player to mark a grid
     private boolean waiting = true;
-
-    // Indicate if it runs as application
-    private boolean isStandAlone = false;
-
-    // Host name or ip
     private String host = "localhost";
 
     public RockPaperSci(String title) {
@@ -256,28 +254,8 @@ public class RockPaperSci extends JFrame implements Runnable, RockPaperSciConsta
         myTurn = b;
     }
 
-    public boolean getMyTurn() {
-        return myTurn;
-    }
-
-    public char getMyToken() {
-        return myToken;
-    }
-
-    public void setMyToken(char c) {
-        myToken = c;
-    }
-
     public void setOtherSelection(int i){
         otherSelection = i;
-    }
-
-    public char getOtherToken() {
-        return otherToken;
-    }
-
-    public void setOtherToken(char c) {
-        otherToken = c;
     }
 
     public void setMySelection(int i){
